@@ -1,23 +1,23 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import dotenv from "dotenv";
 import "express-async-errors";
 
-import errorMiddleware from "./middlewares/error-middleware";
-import processConsts from "./utils/process-consts";
-
 dotenv.config({
-  path: processConsts.stage === "dev" ? ".env.dev" : ".env.prod",
+  path: process.env.NODE_ENV === "dev" ? ".env.dev" : ".env.prod",
 });
 
-console.log(process.env.TESTE);
+import errorMiddleware from "./middlewares/error-middleware";
+import mainRoutes from "./routes/index";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(helmet());
+
+app.use("/main", mainRoutes);
 
 app.use(errorMiddleware());
 

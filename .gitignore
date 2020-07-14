@@ -4,4 +4,9 @@ database.sqlite
 .env.dev
 .env.prod
 
+docker-compose.yml
+
+database.ts
+database.sqlite
+
 dist
