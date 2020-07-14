@@ -3,3 +3,5 @@ node_modules
 database.sqlite
 .env.dev
 .env.prod
+
+dist
