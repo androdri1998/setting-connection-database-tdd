@@ -1,0 +1,26 @@
+{
+  "name": "setting-connection-database-tdd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/androdri1998/setting-connection-database-tdd.git",
+  "author": "André Rodrigues <andre.rodrigues98@outlook.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^3.23.3",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.7",
+    "@types/hapi__joi": "^17.1.4",
+    "@types/helmet": "^0.0.47",
+    "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.0.0-pre.51",
+    "typescript": "^3.9.6"
+  }
+}
