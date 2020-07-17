@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=prod node ./dist/index.js",
+    "dev:test": "NODE_ENV=test ts-node-dev --ignore-watch node_modules app/index.ts",
     "dev": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules app/index.ts",
     "pretest": "NODE_ENV=test",
     "test": "jest --runInBand",

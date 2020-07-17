@@ -6,7 +6,6 @@ database.sqlite
 
 docker-compose.yml
 
-database.ts
 database.sqlite
 
 dist

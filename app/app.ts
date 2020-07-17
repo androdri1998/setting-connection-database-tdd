@@ -1,24 +1,42 @@
 import dotenv from "dotenv";
-import express from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import "express-async-errors";
+import { stages } from "./utils/configs";
 
 dotenv.config({
-  path: process.env.NODE_ENV === "dev" ? ".env.dev" : ".env.prod",
+  path: process.env.NODE_ENV === stages.DEV ? ".env.dev" : ".env.prod",
 });
 
 import errorMiddleware from "./middlewares/error-middleware";
-import mainRoutes from "./routes/index";
+import IndexRoutes from "./routes/index";
 
-const app = express();
+class App {
+  public express: Application;
 
-app.use(cors());
-app.use(express.json());
-app.use(helmet());
+  constructor() {
+    this.express = express();
 
-app.use("/main", mainRoutes);
+    this.middlewares();
+    this.routes();
+    this.middlewaresErrors();
+  }
 
-app.use(errorMiddleware());
+  private middlewares(): void {
+    this.express.use(cors());
+    this.express.use(express.json());
+    this.express.use(helmet());
+  }
 
-export default app;
+  private routes(): void {
+    const IndexRoutesInstance = new IndexRoutes();
+    this.express.use("/main", IndexRoutesInstance.mainRoutes);
+  }
+
+  private middlewaresErrors(): void {
+    this.express.use(errorMiddleware());
+  }
+}
+
+export default App;
