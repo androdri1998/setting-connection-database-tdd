@@ -19,6 +19,7 @@ class Database {
     this.port = Number(processConsts.dbPort);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getConnection(): Promise<any> {
     if (processConsts.stage === stages.TEST) {
       const sqlite3Database = sqlite3.verbose();
