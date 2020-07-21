@@ -1,4 +1,5 @@
 import migrations from "../scripts/migrations";
+import { databaseTables } from "../utils/configs";
 import DatabaseRepository from "../repositories/DatabaseRepository";
 import MigrateRepository from "../repositories/MigrateRepository";
 
@@ -11,21 +12,41 @@ class MigrateController {
   private async executeMigration(type: EMigrates, executeAll: boolean) {
     const DatabaseRepositoryInstance = new DatabaseRepository();
     DatabaseRepositoryInstance.executeWithDatabase(async (CONN) => {
-      for (const migrate of migrations) {
-        // const MigrateRepositoryInstance = new MigrateRepository();
-        // await DatabaseRepositoryInstance.create(CONN, migrate.up[0].script);
-        // try {
-        //   const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
-        //     CONN,
-        //     migrate.version
-        //   );
-        //   console.log("VERSION", versionArr);
-        // } catch (err) {
-        //   console.log("version created");
+      const actions: string[] = [];
+      const MigrateRepositoryInstance = new MigrateRepository();
+      for (const key in migrations) {
+        // const migrate = migrations[key];
+        // if (Number(key) === 0) {
+        //   // const hasTable = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
+        //   //   CONN,
+        //   //   databaseTables.migrateVersions
+        //   // );
+        //   // console.log(hasTable);
+        //   // const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
+        //   //   CONN,
+        //   //   migrate.version
+        //   // );
+        //   // for (const scriptObj of migrate.up) {
+        //   //   await DatabaseRepositoryInstance.create(CONN, scriptObj.script);
+        //   //   actions.push(scriptObj.description);
+        //   // }
+        // } else {
+        //   try {
+        //     // const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
+        //     //   CONN,
+        //     //   migrate.version
+        //     // );
+        //     // for (const scriptObj of migrate.up) {
+        //     //   await DatabaseRepositoryInstance.create(CONN, scriptObj.script);
+        //     //   actions.push(scriptObj.description);
+        //     // }
+        //     // console.log("VERSION", versionArr);
+        //   } catch (err) {
+        //     console.log("version already created");
+        //   }
         // }
-
-        console.log(migrate);
       }
+      console.log(actions);
     });
 
     return executeAll;

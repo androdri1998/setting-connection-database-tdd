@@ -3,10 +3,11 @@ import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import "express-async-errors";
-import { stages } from "./utils/configs";
+import Helpers from "./utils/Helpers";
 
+const HelpersInstance = new Helpers();
 dotenv.config({
-  path: process.env.NODE_ENV === stages.DEV ? ".env.dev" : ".env.prod",
+  path: HelpersInstance.getPathEnv(process.env.NODE_ENV as string),
 });
 
 import errorMiddleware from "./middlewares/error-middleware";

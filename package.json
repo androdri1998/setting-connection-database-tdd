@@ -9,6 +9,8 @@
     "start": "NODE_ENV=prod node ./dist/index.js",
     "dev:test": "NODE_ENV=test ts-node-dev --ignore-watch node_modules app/index.ts",
     "dev": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules app/index.ts",
+    "node:test": "NODE_ENV=test node",
+    "node:dev": "NODE_ENV=dev node",
     "pretest": "NODE_ENV=test",
     "test": "jest",
     "posttest": "NODE_ENV=test"
@@ -24,7 +26,6 @@
     "jest": "^26.1.0",
     "mysql": "^2.18.1",
     "promise-mysql": "^4.1.3",
-    "sqlite3": "^5.0.0",
     "supertest": "^4.0.2",
     "ts-jest": "^26.1.3",
     "uuid": "^8.2.0"

@@ -1,6 +1,7 @@
 node_modules
 
 database.sqlite
+.env.test
 .env.dev
 .env.prod
 
