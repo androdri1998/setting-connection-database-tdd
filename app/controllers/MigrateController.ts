@@ -1,3 +1,10 @@
+import dotenv from "dotenv";
+import Helpers from "../utils/Helpers";
+const HelpersInstance = new Helpers();
+dotenv.config({
+  path: HelpersInstance.getPathEnv(process.env.NODE_ENV as string),
+});
+
 import migrations from "../scripts/migrations";
 import { databaseTables } from "../utils/configs";
 import DatabaseRepository from "../repositories/DatabaseRepository";
@@ -11,45 +18,77 @@ enum EMigrates {
 class MigrateController {
   private async executeMigration(type: EMigrates, executeAll: boolean) {
     const DatabaseRepositoryInstance = new DatabaseRepository();
-    DatabaseRepositoryInstance.executeWithDatabase(async (CONN) => {
-      const actions: string[] = [];
-      const MigrateRepositoryInstance = new MigrateRepository();
-      for (const key in migrations) {
-        // const migrate = migrations[key];
-        // if (Number(key) === 0) {
-        //   // const hasTable = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
-        //   //   CONN,
-        //   //   databaseTables.migrateVersions
-        //   // );
-        //   // console.log(hasTable);
-        //   // const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
-        //   //   CONN,
-        //   //   migrate.version
-        //   // );
-        //   // for (const scriptObj of migrate.up) {
-        //   //   await DatabaseRepositoryInstance.create(CONN, scriptObj.script);
-        //   //   actions.push(scriptObj.description);
-        //   // }
-        // } else {
-        //   try {
-        //     // const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
-        //     //   CONN,
-        //     //   migrate.version
-        //     // );
-        //     // for (const scriptObj of migrate.up) {
-        //     //   await DatabaseRepositoryInstance.create(CONN, scriptObj.script);
-        //     //   actions.push(scriptObj.description);
-        //     // }
-        //     // console.log("VERSION", versionArr);
-        //   } catch (err) {
-        //     console.log("version already created");
-        //   }
-        // }
-      }
-      console.log(actions);
-    });
+    const responseFunction = await DatabaseRepositoryInstance.executeWithDatabase(
+      async (CONN) => {
+        const actions: string[] = [];
+        const addeds: string[] = [];
+        const MigrateRepositoryInstance = new MigrateRepository();
 
-    return executeAll;
+        if (type === EMigrates.UP) {
+          for (const key in migrations) {
+            const migrate = migrations[key];
+            if (Number(key) === 0) {
+              const hasTable = await DatabaseRepositoryInstance.queryTableDatabase(
+                CONN,
+                databaseTables.migrateVersions
+              );
+
+              if (hasTable.length === 0) {
+                for (const scriptObj of migrate.up) {
+                  await DatabaseRepositoryInstance.create(
+                    CONN,
+                    scriptObj.script
+                  );
+                  actions.push(scriptObj.description);
+                }
+
+                MigrateRepositoryInstance.insertMigrateVersion(
+                  CONN,
+                  migrate.version
+                );
+                addeds.push(migrate.version);
+              }
+            } else {
+              try {
+                const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
+                  CONN,
+                  migrate.version
+                );
+
+                if (
+                  (versionArr.length === 0 && executeAll) ||
+                  (versionArr.length === 0 &&
+                    !executeAll &&
+                    addeds.length === 0 &&
+                    !addeds.includes(migrate.version))
+                ) {
+                  for (const scriptObj of migrate.up) {
+                    await DatabaseRepositoryInstance.create(
+                      CONN,
+                      scriptObj.script
+                    );
+                    actions.push(scriptObj.description);
+                  }
+
+                  MigrateRepositoryInstance.insertMigrateVersion(
+                    CONN,
+                    migrate.version
+                  );
+                  addeds.push(migrate.version);
+                }
+              } catch (err) {
+                console.log(err);
+              }
+            }
+          }
+        }
+
+        console.log(actions);
+        return actions;
+      }
+    );
+
+    return responseFunction;
   }
 
   public async upMigrate(): Promise<void> {
