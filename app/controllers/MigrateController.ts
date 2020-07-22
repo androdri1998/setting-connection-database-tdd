@@ -22,6 +22,7 @@ class MigrateController {
       async (CONN) => {
         const actions: string[] = [];
         const addeds: string[] = [];
+        const excludeds: string[] = [];
         const MigrateRepositoryInstance = new MigrateRepository();
 
         if (type === EMigrates.UP) {
@@ -79,6 +80,49 @@ class MigrateController {
               } catch (err) {
                 console.log(err);
               }
+            }
+          }
+        } else if (type === EMigrates.DOWN) {
+          const migrateReverse = migrations.reverse();
+          for (const key in migrateReverse) {
+            const migrate = migrateReverse[key];
+            try {
+              const hasTable = await DatabaseRepositoryInstance.queryTableDatabase(
+                CONN,
+                databaseTables.migrateVersions
+              );
+
+              if (hasTable.length > 0) {
+                const versionArr = await MigrateRepositoryInstance.selectOnlyMigrateVersion(
+                  CONN,
+                  migrate.version
+                );
+                if (
+                  (versionArr.length > 0 && executeAll) ||
+                  (versionArr.length > 0 &&
+                    !executeAll &&
+                    excludeds.length === 0 &&
+                    !excludeds.includes(migrate.version))
+                ) {
+                  for (const scriptObj of migrate.down) {
+                    await DatabaseRepositoryInstance.create(
+                      CONN,
+                      scriptObj.script
+                    );
+                    actions.push(scriptObj.description);
+                  }
+
+                  if (Number(key) < migrateReverse.length - 1) {
+                    MigrateRepositoryInstance.deleteMigrateVersion(
+                      CONN,
+                      migrate.version
+                    );
+                    excludeds.push(migrate.version);
+                  }
+                }
+              }
+            } catch (err) {
+              console.log(err);
             }
           }
         }

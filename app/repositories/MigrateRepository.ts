@@ -4,6 +4,7 @@ import moment from "moment";
 import DatabaseRepositorie from "./DatabaseRepository";
 import selectsSqls from "../sqls/selects";
 import insertsSqls from "../sqls/inserts";
+import deletesSqls from "../sqls/deletes";
 
 class MigrateRepositorie {
   public async selectOnlyMigrateVersion(
@@ -33,6 +34,21 @@ class MigrateRepositorie {
       CONN,
       insertsSqls.INSERT_VERSION_MIGRATE,
       [versionId, version, createdAt]
+    );
+
+    return response;
+  }
+
+  public async deleteMigrateVersion(
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    CONN: any,
+    version: string
+  ): Promise<string[]> {
+    const DatabaseRepositorieInstance = new DatabaseRepositorie();
+    const response = await DatabaseRepositorieInstance.query(
+      CONN,
+      deletesSqls.DELETE_VERSION_MIGRATE,
+      [version]
     );
 
     return response;
