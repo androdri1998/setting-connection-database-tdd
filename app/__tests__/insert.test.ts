@@ -1,12 +1,19 @@
 import request from "supertest";
+import faker from "faker";
+
 import App from "../App";
+import truncate from "./utils/truncate";
 
-describe("Inserts", () => {
-  beforeEach(async () => {});
+describe("Jobs", () => {
+  beforeEach(async () => {
+    await truncate(["jobs"]);
+  });
 
-  it("Should be to do request", async () => {
+  it("Should be to create a job", async () => {
     const AppInstace = new App();
-    const response = await request(AppInstace.express).post("/main");
+    const response = await request(AppInstace.express)
+      .post("/main")
+      .send({ name: faker.name.jobTitle() });
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("created");

@@ -6,5 +6,5 @@ export interface IStages {
 
 export interface IDatabaseTables {
   migrateVersions: string;
-  works: string;
+  jobs: string;
 }

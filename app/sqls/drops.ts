@@ -5,8 +5,8 @@ const dropsSqls: IDropsSqls = {
   DROP_TABLE_MIGRATE_VERSIONS: `
     DROP TABLE ${databaseTables.migrateVersions};
   `,
-  DROP_TABLE_WORKS: `
-    DROP TABLE ${databaseTables.works};
+  DROP_TABLE_JOBS: `
+    DROP TABLE ${databaseTables.jobs};
   `,
 };
 

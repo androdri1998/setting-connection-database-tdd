@@ -1,8 +1,9 @@
 import Database from "../database/Database";
 import selectsSqls from "../sqls/selects";
+import deletesSqls from "../sqls/deletes";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-class DatabaseRepositorie {
+class DatabaseRepository {
   public async query(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     CONN: any,
@@ -20,6 +21,19 @@ class DatabaseRepositorie {
     script: string
   ): Promise<any[]> {
     const response = await this.query(CONN, script);
+    return response;
+  }
+
+  public async truncate(
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    CONN: any,
+    tableName: string
+  ): Promise<any[]> {
+    const handleTruncate = deletesSqls.TRUNCATE_TABLE.replace(
+      ":table",
+      tableName
+    );
+    const response = await this.query(CONN, handleTruncate);
     return response;
   }
 
@@ -44,6 +58,24 @@ class DatabaseRepositorie {
     await connection.end();
     return response;
   }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public async startTransaction(CONN: any): Promise<any> {
+    await CONN.beginTransaction();
+    return true;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public async commit(CONN: any): Promise<any> {
+    await CONN.commit();
+    return true;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  public async rollback(CONN: any): Promise<any> {
+    await CONN.rollback();
+    return true;
+  }
 }
 
-export default DatabaseRepositorie;
+export default DatabaseRepository;

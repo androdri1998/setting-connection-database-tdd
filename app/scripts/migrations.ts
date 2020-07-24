@@ -23,14 +23,14 @@ const migrations = [
     version: "958581d6-0eeb-405a-a447-10b9b19e350a",
     up: [
       {
-        script: createsSqls.CREATE_TABLE_WORKS,
-        description: `Create table ${databaseTables.works}.`,
+        script: createsSqls.CREATE_TABLE_JOBS,
+        description: `Create table ${databaseTables.jobs}.`,
       },
     ],
     down: [
       {
-        script: dropsSqls.DROP_TABLE_WORKS,
-        description: `Drop table ${databaseTables.works}.`,
+        script: dropsSqls.DROP_TABLE_JOBS,
+        description: `Drop table ${databaseTables.jobs}.`,
       },
     ],
   },
@@ -38,14 +38,14 @@ const migrations = [
     version: "10bc92fa-f9e8-4555-9629-b22b0348ec06",
     up: [
       {
-        script: altersSqls.ADD_COLUMN_CREATED_AT_TABLE_WORKS,
-        description: `Add column 'created_at' in table ${databaseTables.works}.`,
+        script: altersSqls.ADD_COLUMN_CREATED_AT_TABLE_JOBS,
+        description: `Add column 'created_at' in table ${databaseTables.jobs}.`,
       },
     ],
     down: [
       {
-        script: altersSqls.DROP_COLUMN_CREATED_AT_TABLE_WORKS,
-        description: `Drop column 'created_at' in table${databaseTables.works}.`,
+        script: altersSqls.DROP_COLUMN_CREATED_AT_TABLE_JOBS,
+        description: `Drop column 'created_at' in table${databaseTables.jobs}.`,
       },
     ],
   },

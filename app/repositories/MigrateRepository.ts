@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import DatabaseRepositorie from "./DatabaseRepository";
+import DatabaseRepository from "./DatabaseRepository";
 import selectsSqls from "../sqls/selects";
 import insertsSqls from "../sqls/inserts";
 import deletesSqls from "../sqls/deletes";
 
-class MigrateRepositorie {
+class MigrateRepository {
   public async selectOnlyMigrateVersion(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     CONN: any,
     version: string
   ): Promise<string[]> {
-    const DatabaseRepositorieInstance = new DatabaseRepositorie();
-    const response = await DatabaseRepositorieInstance.query(
+    const DatabaseRepositoryInstance = new DatabaseRepository();
+    const response = await DatabaseRepositoryInstance.query(
       CONN,
       selectsSqls.SELECT_MIGRATE_VERSION,
       [version]
@@ -27,10 +27,10 @@ class MigrateRepositorie {
     CONN: any,
     version: string
   ): Promise<string[]> {
-    const DatabaseRepositorieInstance = new DatabaseRepositorie();
+    const DatabaseRepositoryInstance = new DatabaseRepository();
     const createdAt = moment().utc().format("YYYY-MM-DD HH-mm-ss");
     const versionId = uuidv4();
-    const response = await DatabaseRepositorieInstance.query(
+    const response = await DatabaseRepositoryInstance.query(
       CONN,
       insertsSqls.INSERT_VERSION_MIGRATE,
       [versionId, version, createdAt]
@@ -44,8 +44,8 @@ class MigrateRepositorie {
     CONN: any,
     version: string
   ): Promise<string[]> {
-    const DatabaseRepositorieInstance = new DatabaseRepositorie();
-    const response = await DatabaseRepositorieInstance.query(
+    const DatabaseRepositoryInstance = new DatabaseRepository();
+    const response = await DatabaseRepositoryInstance.query(
       CONN,
       deletesSqls.DELETE_VERSION_MIGRATE,
       [version]
@@ -55,4 +55,4 @@ class MigrateRepositorie {
   }
 }
 
-export default MigrateRepositorie;
+export default MigrateRepository;

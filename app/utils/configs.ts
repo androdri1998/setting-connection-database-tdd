@@ -8,5 +8,5 @@ export const stages: IStages = {
 
 export const databaseTables: IDatabaseTables = {
   migrateVersions: "migrate_versions",
-  works: "works",
+  jobs: "jobs",
 };

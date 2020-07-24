@@ -9,10 +9,10 @@ const createSqls: ICreatesSqls = {
       created_at DATETIME NOT NULL
     );
   `,
-  CREATE_TABLE_WORKS: `
-    CREATE TABLE ${databaseTables.works}(
+  CREATE_TABLE_JOBS: `
+    CREATE TABLE ${databaseTables.jobs}(
       id VARCHAR(36) PRIMARY KEY,
-      work VARCHAR(100) NOT NULL
+      job VARCHAR(100) NOT NULL
     );
   `,
 };
