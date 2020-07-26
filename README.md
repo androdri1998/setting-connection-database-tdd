@@ -17,7 +17,7 @@ DB_PORT=[PORT DATABASE]
   
 Where `[stage]` should be replaced with one of the stages of the application:  
 #### `prod`
-This stage is not recommend to use, this is only a aplication of test and practice.  
+This stage is not recommended to use, this is only a application of test and practice.  
 #### `dev`
 This stage is runned in development mode.
 #### `test`
