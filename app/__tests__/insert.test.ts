@@ -19,4 +19,11 @@ describe("Jobs", () => {
     expect(response.body).toHaveProperty("created");
     expect(response.body.created).toBe(true);
   });
+
+  it("Should be return a error 400 to create a job", async () => {
+    const AppInstace = new App();
+    const response = await request(AppInstace.express).post("/main");
+
+    expect(response.status).toBe(400);
+  });
 });
